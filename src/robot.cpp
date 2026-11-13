@@ -9,6 +9,9 @@ pros::MotorGroup left_mg({-9, -10}, pros::v5::MotorGears::blue); // TODO ports
 pros::MotorGroup right_mg({1, 2}, pros::v5::MotorGears::blue);   // TODO ports
 pros::Imu imu(19);                                               // TODO port
 
+// the two lift motors face each other, so one is reversed; if the lift fights itself, swap which is negative
+pros::MotorGroup lift_mg({3, -4}, pros::v5::MotorGears::green); // TODO ports
+
 lemlib::Drivetrain drivetrain(&left_mg, &right_mg,
                               11.75,                      // TODO track width, in inches
                               lemlib::Omniwheel::NEW_325, // TODO wheel size

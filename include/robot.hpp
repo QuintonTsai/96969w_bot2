@@ -12,4 +12,6 @@ extern pros::MotorGroup left_mg;
 extern pros::MotorGroup right_mg;
 extern pros::Imu imu;
 
+extern pros::MotorGroup lift_mg;
+
 extern lemlib::Chassis chassis;

@@ -1,4 +1,5 @@
 #include "auton_helpers.hpp"
+#include "lift.hpp"
 #include "robot.hpp"
 #include <cmath>
 
@@ -6,6 +7,8 @@ void auton_start() {
 	chassis.setPose(0, 0, 0);
 	left_mg.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 	right_mg.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+	// the lift starts every match all the way down, so this corrects a zero taken with it raised
+	lift_zero();
 }
 
 // LemLib heading is clockwise from +Y, so forward is (sin, cos) and right is (cos, -sin)

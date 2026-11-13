@@ -1,5 +1,6 @@
 #include "main.h"
 #include "autons.hpp"
+#include "lift.hpp"
 #include "robot.hpp"
 
 /**
@@ -9,6 +10,7 @@
 void initialize() {
 	pros::lcd::initialize();
 	chassis.calibrate();
+	lift_init();
 	// zero mechanism sensors here too, once at program start, so auton and driver control share a reference
 
 	// set up here rather than in competition_initialize so it also works without a field/competition switch
@@ -58,7 +60,8 @@ void opcontrol() {
 		chassis.arcade(dir, turn, false, 0.5);
 
 		// mechanism controls go here; for anything bigger than a button-to-motor mapping, put it in its
-		// own file (e.g. src/lift.cpp + include/lift.hpp) and call an update function from this loop
+		// own file (like src/lift.cpp + include/lift.hpp) and call an update function from this loop
+		lift_update();
 
 		pros::delay(20);
 	}
