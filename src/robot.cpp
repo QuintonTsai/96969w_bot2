@@ -5,9 +5,9 @@
 pros::Controller master(pros::E_CONTROLLER_MASTER);
 
 // negative port = reversed motor
-pros::MotorGroup left_mg({-9, -10}, pros::v5::MotorGears::blue); // TODO ports
-pros::MotorGroup right_mg({1, 2}, pros::v5::MotorGears::blue);   // TODO ports
-pros::Imu imu(19);                                               // TODO port
+pros::MotorGroup left_mg({9, -10}, pros::v5::MotorGears::blue); // TODO ports
+pros::MotorGroup right_mg({-7, 8}, pros::v5::MotorGears::blue); // TODO ports
+pros::Imu imu(11);                                               // TODO port
 
 // the two lift motors face each other, so one is reversed; if the lift fights itself, swap which is negative
 pros::MotorGroup lift_mg({3, -4}, pros::v5::MotorGears::green); // TODO ports
@@ -18,8 +18,22 @@ lemlib::Drivetrain drivetrain(&left_mg, &right_mg,
                               450,                        // TODO wheel rpm after external gearing
                               2);                         // horizontalDrift, 2 for all omnis, 8 with traction wheels
 
-// no tracking wheels; odometry falls back to drive motor encoders + IMU
-lemlib::OdomSensors sensors(nullptr, nullptr, nullptr, nullptr, &imu);
+// tracking wheels on rotation sensors; a negative port reverses the sensor
+// if X/Y on the brain screen counts the wrong way when you push the robot, negate that port
+pros::Rotation vertical_rotation(6);    // front (forward/back) tracking wheel
+pros::Rotation horizontal_rotation(12); // sideways tracking wheel
+
+// offset = distance from the tracking center (center of rotation) to the wheel, in inches
+// vertical wheel: + if right of center, - if left; horizontal wheel: + if in front of center, - if behind
+// 2.25" wheels (no LemLib preset for this size, so the diameter is written directly)
+lemlib::TrackingWheel vertical_tracking_wheel(&vertical_rotation, 2.25, 3.85); // 3.85" right of center
+lemlib::TrackingWheel horizontal_tracking_wheel(&horizontal_rotation, 2.25, 5); // 5" in front of center
+
+lemlib::OdomSensors sensors(&vertical_tracking_wheel,   // vertical tracking wheel
+                            nullptr,                    // no second vertical tracking wheel
+                            &horizontal_tracking_wheel, // horizontal tracking wheel
+                            nullptr,                    // no second horizontal tracking wheel
+                            &imu);
 
 // TODO retune: these were tuned on the old bot; they're a starting point, not right for a new one
 lemlib::ControllerSettings lateral_controller(8.2, // proportional gain (kP)
