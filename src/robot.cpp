@@ -10,7 +10,14 @@ pros::MotorGroup right_mg({-7, 8}, pros::v5::MotorGears::blue); // TODO ports
 pros::Imu imu(11);                                               // TODO port
 
 // the two lift motors face each other, so one is reversed; if the lift fights itself, swap which is negative
-pros::MotorGroup lift_mg({3, -4}, pros::v5::MotorGears::green); // TODO ports
+pros::MotorGroup lift_mg({13, -14}, pros::v5::MotorGears::green); // TODO ports
+
+// if R2 spins the intake the wrong way, make the port negative (-15)
+pros::Motor intake_motor(15, pros::v5::MotorGears::green);
+
+// claw pistons on the brain's 3-wire (ADI) ports
+pros::adi::DigitalOut claw_grip('A');  // opens/closes the claw
+pros::adi::DigitalOut claw_raise('B'); // raises/lowers the claw
 
 lemlib::Drivetrain drivetrain(&left_mg, &right_mg,
                               11.75,                      // TODO track width, in inches

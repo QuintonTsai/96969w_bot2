@@ -16,17 +16,20 @@ void lift_zero() {
 }
 
 void lift_update() {
-	bool up = master.get_digital(DIGITAL_R1);
-	bool down = master.get_digital(DIGITAL_R2);
-	// group position reads the first motor (port 3); the reversed one is already flipped so up is positive
+	bool up = master.get_digital(DIGITAL_L2);
+	bool down = master.get_digital(DIGITAL_L1);
+	// group position reads the first motor (port 13); the reversed one is already flipped so up is positive
 	bool at_bottom = lift_mg.get_position() <= LIFT_DOWN_LIMIT;
 
 	if (up && !down) {
-		lift_mg.move(100);
+		lift_mg.move(127);
 	} else if (down && !up && !at_bottom) {
-		lift_mg.move(-100);
+		// let the lift fall under its own weight instead of driving it down
+		lift_mg.set_brake_mode_all(pros::E_MOTOR_BRAKE_COAST);
+		lift_mg.brake();
 	} else {
-		// brake() applies the hold brake mode set in lift_init
+		// back to hold so the lift stays put when released (and at the bottom)
+		lift_mg.set_brake_mode_all(pros::E_MOTOR_BRAKE_HOLD);
 		lift_mg.brake();
 	}
 }

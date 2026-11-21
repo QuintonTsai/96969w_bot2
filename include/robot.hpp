@@ -15,5 +15,8 @@ extern pros::Rotation vertical_rotation;
 extern pros::Rotation horizontal_rotation;
 
 extern pros::MotorGroup lift_mg;
+extern pros::Motor intake_motor;
+extern pros::adi::DigitalOut claw_grip;
+extern pros::adi::DigitalOut claw_raise;
 
 extern lemlib::Chassis chassis;

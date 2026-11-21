@@ -9,5 +9,5 @@ void lift_init();
 // set the lift's current position as the bottom (the down limit); only call it with the lift all the way down
 void lift_zero();
 
-// call every opcontrol loop: R1 drives the lift up, R2 down until the down limit, neither (or both) holds it
+// call every opcontrol loop: L2 drives the lift up, L1 lets it fall by gravity (coast) until the down limit, neither (or both) holds it
 void lift_update();

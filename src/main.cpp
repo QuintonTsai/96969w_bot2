@@ -1,5 +1,6 @@
 #include "main.h"
 #include "autons.hpp"
+#include "claw.hpp"
 #include "lift.hpp"
 #include "robot.hpp"
 
@@ -62,6 +63,14 @@ void opcontrol() {
 		// mechanism controls go here; for anything bigger than a button-to-motor mapping, put it in its
 		// own file (like src/lift.cpp + include/lift.hpp) and call an update function from this loop
 		lift_update();
+		claw_update();
+
+		// R2 held spins the intake, released stops it
+		if (master.get_digital(DIGITAL_R2)) {
+			intake_motor.move(127);
+		} else {
+			intake_motor.brake();
+		}
 
 		pros::delay(20);
 	}
